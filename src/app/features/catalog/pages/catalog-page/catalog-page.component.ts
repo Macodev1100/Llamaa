@@ -15,11 +15,10 @@ import { ProductGridComponent } from '../../components/product-grid/product-grid
   standalone: true,
   imports: [CatalogFiltersComponent, ProductGridComponent],
   template: `
-    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <header class="mb-8">
-        <p class="mb-1 text-sm uppercase tracking-widest text-brand-accent">Shop</p>
-        <h1 class="section-title">Catálogo de productos</h1>
-        <p class="mt-2 text-ink-muted">
+    <section class="px-4 py-5 sm:px-5">
+      <header class="mb-6">
+        <h1 class="section-title">Productos</h1>
+        <p class="mt-1 text-sm text-ink-muted">
           {{ products().length }} producto(s) encontrados
         </p>
       </header>

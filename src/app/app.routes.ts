@@ -3,6 +3,16 @@ import { MainLayoutComponent } from './layout/main-layout/main-layout.component'
 
 export const routes: Routes = [
   {
+    path: 'login',
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((m) => m.LOGIN_ROUTES),
+  },
+  {
+    path: 'register',
+    loadChildren: () =>
+      import('./features/auth/auth.routes').then((m) => m.REGISTER_ROUTES),
+  },
+  {
     path: '',
     component: MainLayoutComponent,
     children: [
@@ -31,12 +41,6 @@ export const routes: Routes = [
         data: { animation: 'checkout' },
         loadChildren: () =>
           import('./features/checkout/checkout.routes').then((m) => m.CHECKOUT_ROUTES),
-      },
-      {
-        path: 'login',
-        data: { animation: 'login' },
-        loadChildren: () =>
-          import('./features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
       },
     ],
   },

@@ -9,8 +9,8 @@ import { HeroBannerComponent } from '../../components/hero-banner/hero-banner.co
   imports: [HeroBannerComponent, FeaturedProductsComponent, CategoryShowcaseComponent],
   template: `
     <app-hero-banner />
-    <app-featured-products />
     <app-category-showcase />
+    <app-featured-products />
   `,
 })
 export class LandingPageComponent {}

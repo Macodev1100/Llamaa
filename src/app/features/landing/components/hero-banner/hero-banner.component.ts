@@ -1,306 +1,194 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnDestroy,
-  ViewChild,
-  inject,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
 
 @Component({
   selector: 'app-hero-banner',
   standalone: true,
   imports: [RouterLink],
   template: `
-    <section #heroRoot class="hero-cinematic relative">
-      <div class="hero-sticky sticky top-0 flex min-h-[100svh] items-center overflow-hidden">
-        <!-- Capas de fondo -->
-        <div class="pointer-events-none absolute inset-0" aria-hidden="true">
-          <div #orbA class="hero-orb hero-orb-a"></div>
-          <div #orbB class="hero-orb hero-orb-b"></div>
-          <div #orbC class="hero-orb hero-orb-c"></div>
-          <div class="hero-grid"></div>
-          <div #vignette class="hero-vignette"></div>
+    <section class="hero">
+      <div class="hero-inner">
+        <div class="hero-beams" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
 
-        <div
-          class="relative z-10 mx-auto grid w-full max-w-7xl items-center gap-10
-            px-4 py-20 sm:px-6 lg:grid-cols-2 lg:gap-14"
-        >
-          <div #copy class="flex flex-col justify-center">
-            <p
-              #eyebrow
-              class="mb-4 text-sm font-medium uppercase tracking-[0.28em] text-brand-accent"
-            >
-              Nueva temporada
-            </p>
-
-            <h1
-              class="font-display text-4xl font-bold leading-[1.05] md:text-5xl lg:text-6xl xl:text-7xl"
-            >
-              <span #line1 class="hero-line block">Equipa tu setup</span>
-              <span #line2 class="hero-line block">
-                con <span class="text-brand-glow">neón</span>
-              </span>
-              <span #line3 class="hero-line block text-brand-pink">y potencia</span>
-            </h1>
-
-            <p #subtitle class="mt-6 max-w-xl text-base text-ink-muted sm:text-lg">
-              GPUs, monitores OLED y periféricos RGB en una experiencia de compra
-              cinematográfica. Scroll para descubrir el catálogo.
-            </p>
-
-            <div #cta class="mt-8 flex flex-wrap gap-3">
-              <a routerLink="/catalog" class="btn-primary">Ver catálogo</a>
-              <a routerLink="/catalog" class="btn-secondary">Ofertas destacadas</a>
-            </div>
-          </div>
-
-          <div #visualWrap class="relative flex items-center justify-center">
-            <div
-              #visualCard
-              class="card-surface relative w-full max-w-lg overflow-hidden p-1 shadow-neon-accent"
-            >
-              <img
-                #heroImage
-                src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1000&h=700&fit=crop"
-                alt="Setup gaming premium"
-                class="aspect-[4/3] w-full rounded-lg object-cover"
-              />
-              <div
-                #badge
-                class="absolute bottom-4 left-4 right-4 rounded-lg border border-border
-                  bg-bg/85 p-4 backdrop-blur-md"
-              >
-                <p class="font-display text-sm text-brand-pink">Destacado</p>
-                <p class="font-medium">Builds listos para 1440p / 4K</p>
-              </div>
-            </div>
-
-            <div
-              #floatChip
-              class="absolute -left-2 top-8 hidden rounded-full border border-brand/40
-                bg-surface/90 px-3 py-1.5 text-xs font-medium text-brand-glow
-                shadow-neon backdrop-blur sm:block"
-            >
-              RTX · OLED · RGB
-            </div>
-          </div>
-        </div>
-
-        <div
-          #scrollCue
-          class="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 flex-col items-center
-            gap-2 text-xs uppercase tracking-[0.25em] text-ink-muted"
-        >
-          <span>Scroll</span>
-          <span class="hero-scroll-line"></span>
+        <div class="hero-copy">
+          <p class="hero-kicker">Rydex Store Industries</p>
+          <h1>LO MEJOR DEL <span>GAMING</span></h1>
+          <p class="hero-sub">Consolas, juegos y accesorios a los mejores precios.</p>
+          <a routerLink="/catalog" class="hero-cta">Ver Productos</a>
         </div>
       </div>
     </section>
   `,
   styles: `
-    :host {
-      display: block;
+    .hero {
+      padding: 1rem 1rem 0;
     }
 
-    .hero-cinematic {
-      height: 220vh;
-    }
-
-    .hero-orb {
-      position: absolute;
-      border-radius: 9999px;
-      filter: blur(40px);
-      opacity: 0.55;
-      will-change: transform;
-    }
-
-    .hero-orb-a {
-      top: 8%;
-      left: 10%;
-      width: min(42vw, 420px);
-      height: min(42vw, 420px);
-      background: radial-gradient(circle, var(--color-primary) 0%, transparent 70%);
-    }
-
-    .hero-orb-b {
-      right: 5%;
-      bottom: 10%;
-      width: min(36vw, 360px);
-      height: min(36vw, 360px);
-      background: radial-gradient(circle, var(--color-accent) 0%, transparent 70%);
-    }
-
-    .hero-orb-c {
-      top: 40%;
-      left: 45%;
-      width: min(28vw, 280px);
-      height: min(28vw, 280px);
-      background: radial-gradient(circle, var(--color-accent-2) 0%, transparent 70%);
-    }
-
-    .hero-grid {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px),
-        linear-gradient(90deg, color-mix(in srgb, var(--color-border) 35%, transparent) 1px, transparent 1px);
-      background-size: 48px 48px;
-      mask-image: radial-gradient(ellipse at center, black 20%, transparent 75%);
-      opacity: 0.35;
-    }
-
-    .hero-vignette {
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at center, transparent 35%, var(--color-bg) 90%);
-      opacity: 0.85;
-    }
-
-    .hero-line {
-      will-change: transform, opacity;
-    }
-
-    .hero-scroll-line {
-      display: block;
-      width: 1px;
-      height: 36px;
-      background: linear-gradient(to bottom, var(--color-primary-glow), transparent);
-      animation: scrollPulse 1.6s ease-in-out infinite;
-    }
-
-    @keyframes scrollPulse {
-      0%,
-      100% {
-        opacity: 0.35;
-        transform: scaleY(0.7);
+    @media (min-width: 640px) {
+      .hero {
+        padding: 1.25rem 1.25rem 0;
       }
-      50% {
-        opacity: 1;
-        transform: scaleY(1);
+    }
+
+    .hero-inner {
+      position: relative;
+      overflow: hidden;
+      border-radius: 1rem;
+      min-height: 14rem;
+      display: flex;
+      align-items: center;
+      padding: 1.75rem;
+      border: 1px solid color-mix(in srgb, var(--color-primary) 35%, var(--color-border));
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--color-primary) 12%, transparent),
+        0 0 40px color-mix(in srgb, var(--color-primary) 18%, transparent),
+        inset 0 0 40px color-mix(in srgb, var(--color-primary) 8%, transparent);
+      background:
+        linear-gradient(90deg, rgb(11 14 20 / 0.9) 0%, rgb(11 14 20 / 0.45) 55%, rgb(11 14 20 / 0.25) 100%),
+        url('/assets/hero-banner.jpeg') right center / cover no-repeat,
+        linear-gradient(135deg, #1a1040, #0b0e14);
+    }
+
+    @media (min-width: 768px) {
+      .hero-inner {
+        min-height: 17rem;
+        padding: 2.25rem 2.5rem;
+      }
+    }
+
+    .hero-beams {
+      pointer-events: none;
+      position: absolute;
+      inset: 0;
+    }
+
+    .hero-beams span {
+      position: absolute;
+      width: 2px;
+      height: 140%;
+      top: -20%;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        color-mix(in srgb, var(--color-accent) 70%, transparent),
+        transparent
+      );
+      filter: blur(1px);
+      opacity: 0.45;
+      animation: beamMove 5s linear infinite;
+    }
+
+    .hero-beams span:nth-child(1) {
+      left: 18%;
+      animation-duration: 4.5s;
+    }
+
+    .hero-beams span:nth-child(2) {
+      left: 48%;
+      animation-duration: 6s;
+      animation-delay: -1.5s;
+      background: linear-gradient(
+        to bottom,
+        transparent,
+        color-mix(in srgb, var(--color-primary) 75%, transparent),
+        transparent
+      );
+    }
+
+    .hero-beams span:nth-child(3) {
+      left: 78%;
+      animation-duration: 5.2s;
+      animation-delay: -2.5s;
+    }
+
+    .hero-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 30rem;
+    }
+
+    .hero-kicker {
+      margin: 0 0 0.45rem;
+      font-size: 0.75rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--color-primary-glow);
+      text-shadow: 0 0 12px color-mix(in srgb, var(--color-primary) 45%, transparent);
+    }
+
+    .hero-copy h1 {
+      margin: 0;
+      font-size: clamp(1.5rem, 3vw, 2.45rem);
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      color: #fff;
+      text-shadow:
+        0 0 12px color-mix(in srgb, var(--color-primary) 35%, transparent),
+        0 0 28px color-mix(in srgb, var(--color-primary) 20%, transparent);
+    }
+
+    .hero-copy h1 span {
+      color: var(--color-accent);
+      text-shadow:
+        0 0 12px color-mix(in srgb, var(--color-accent) 55%, transparent),
+        0 0 28px color-mix(in srgb, var(--color-accent) 30%, transparent);
+    }
+
+    .hero-sub {
+      margin: 0.7rem 0 1.2rem;
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
+
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      background: var(--color-accent);
+      color: #04120a;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.72rem 1.4rem;
+      box-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 45%, transparent);
+      transition:
+        filter 160ms ease,
+        transform 160ms ease,
+        box-shadow 160ms ease;
+    }
+
+    .hero-cta:hover {
+      filter: brightness(1.08);
+      transform: translateY(-2px);
+      box-shadow: 0 0 32px color-mix(in srgb, var(--color-accent) 65%, transparent);
+    }
+
+    @keyframes beamMove {
+      0% {
+        transform: translateY(-10%) rotate(12deg);
+        opacity: 0;
+      }
+      20%,
+      80% {
+        opacity: 0.5;
+      }
+      100% {
+        transform: translateY(20%) rotate(12deg);
+        opacity: 0;
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .hero-cinematic {
-        height: auto;
-      }
-
-      .hero-scroll-line {
+      .hero-beams span {
         animation: none;
+        opacity: 0.25;
       }
     }
   `,
 })
-export class HeroBannerComponent implements AfterViewInit, OnDestroy {
-  @ViewChild('heroRoot', { static: true }) heroRoot!: ElementRef<HTMLElement>;
-  @ViewChild('orbA', { static: true }) orbA!: ElementRef<HTMLElement>;
-  @ViewChild('orbB', { static: true }) orbB!: ElementRef<HTMLElement>;
-  @ViewChild('orbC', { static: true }) orbC!: ElementRef<HTMLElement>;
-  @ViewChild('copy', { static: true }) copy!: ElementRef<HTMLElement>;
-  @ViewChild('eyebrow', { static: true }) eyebrow!: ElementRef<HTMLElement>;
-  @ViewChild('line1', { static: true }) line1!: ElementRef<HTMLElement>;
-  @ViewChild('line2', { static: true }) line2!: ElementRef<HTMLElement>;
-  @ViewChild('line3', { static: true }) line3!: ElementRef<HTMLElement>;
-  @ViewChild('subtitle', { static: true }) subtitle!: ElementRef<HTMLElement>;
-  @ViewChild('cta', { static: true }) cta!: ElementRef<HTMLElement>;
-  @ViewChild('visualWrap', { static: true }) visualWrap!: ElementRef<HTMLElement>;
-  @ViewChild('visualCard', { static: true }) visualCard!: ElementRef<HTMLElement>;
-  @ViewChild('heroImage', { static: true }) heroImage!: ElementRef<HTMLImageElement>;
-  @ViewChild('badge', { static: true }) badge!: ElementRef<HTMLElement>;
-  @ViewChild('floatChip', { static: true }) floatChip!: ElementRef<HTMLElement>;
-  @ViewChild('scrollCue', { static: true }) scrollCue!: ElementRef<HTMLElement>;
-  @ViewChild('vignette', { static: true }) vignette!: ElementRef<HTMLElement>;
-
-  private readonly host = inject(ElementRef<HTMLElement>);
-  private ctx?: gsap.Context;
-
-  ngAfterViewInit(): void {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion) {
-      return;
-    }
-
-    this.ctx = gsap.context(() => {
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-
-      intro
-        .from(this.eyebrow.nativeElement, { y: 24, opacity: 0, duration: 0.7 }, 0.1)
-        .from(
-          [this.line1.nativeElement, this.line2.nativeElement, this.line3.nativeElement],
-          { y: 48, opacity: 0, duration: 0.9, stagger: 0.12 },
-          0.2
-        )
-        .from(this.subtitle.nativeElement, { y: 20, opacity: 0, duration: 0.6 }, 0.55)
-        .from(this.cta.nativeElement, { y: 16, opacity: 0, duration: 0.55 }, 0.7)
-        .from(
-          this.visualCard.nativeElement,
-          { y: 60, opacity: 0, scale: 0.92, rotate: -2, duration: 1 },
-          0.25
-        )
-        .from(this.floatChip.nativeElement, { x: -20, opacity: 0, duration: 0.5 }, 0.85)
-        .from(this.scrollCue.nativeElement, { opacity: 0, duration: 0.5 }, 1);
-
-      gsap.to(this.orbA.nativeElement, {
-        x: 40,
-        y: -30,
-        duration: 6,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-      gsap.to(this.orbB.nativeElement, {
-        x: -30,
-        y: 40,
-        duration: 7.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-      gsap.to(this.orbC.nativeElement, {
-        x: 20,
-        y: 25,
-        duration: 5.5,
-        repeat: -1,
-        yoyo: true,
-        ease: 'sine.inOut',
-      });
-
-      const scrollTl = gsap.timeline({
-        scrollTrigger: {
-          trigger: this.heroRoot.nativeElement,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 1.1,
-        },
-      });
-
-      scrollTl
-        .to(this.copy.nativeElement, { y: -80, opacity: 0.15, ease: 'none' }, 0)
-        .to(
-          this.visualWrap.nativeElement,
-          { y: -40, scale: 1.08, rotate: 2, ease: 'none' },
-          0
-        )
-        .to(this.heroImage.nativeElement, { scale: 1.18, ease: 'none' }, 0)
-        .to(this.badge.nativeElement, { y: 30, opacity: 0, ease: 'none' }, 0)
-        .to(this.floatChip.nativeElement, { x: -40, opacity: 0, ease: 'none' }, 0)
-        .to(this.scrollCue.nativeElement, { opacity: 0, y: 20, ease: 'none' }, 0)
-        .to(this.orbA.nativeElement, { x: -120, y: -80, scale: 1.3, ease: 'none' }, 0)
-        .to(this.orbB.nativeElement, { x: 100, y: 60, scale: 1.2, ease: 'none' }, 0)
-        .to(this.orbC.nativeElement, { scale: 1.5, opacity: 0.2, ease: 'none' }, 0)
-        .to(this.vignette.nativeElement, { opacity: 1, ease: 'none' }, 0)
-        .to(this.visualCard.nativeElement, { opacity: 0.35, ease: 'none' }, 0.55);
-    }, this.host.nativeElement);
-  }
-
-  ngOnDestroy(): void {
-    this.ctx?.revert();
-  }
-}
+export class HeroBannerComponent {}

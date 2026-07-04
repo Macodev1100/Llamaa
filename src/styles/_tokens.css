@@ -1,18 +1,18 @@
 :root {
-  /* Superficies */
-  --color-bg: #0b0614;
-  --color-surface: #140a22;
-  --color-surface-2: #1e1033;
-  --color-border: #2d1b4e;
+  /* Superficies — dark navy del mockup */
+  --color-bg: #0b0e14;
+  --color-surface: #12161f;
+  --color-surface-2: #1a1f2b;
+  --color-border: #2a3142;
 
-  /* Marca / neón */
-  --color-primary: #a855f7;
-  --color-primary-glow: #c084fc;
-  --color-accent: #22d3ee;
-  --color-accent-2: #e879f9;
+  /* Marca */
+  --color-primary: #7b42f6;
+  --color-primary-glow: #9b6dff;
+  --color-accent: #2ecc71;
+  --color-accent-2: #00ff88;
 
   /* Texto */
-  --color-text: #f5f3ff;
-  --color-text-muted: #a78bfa;
-  --color-danger: #fb7185;
+  --color-text: #ffffff;
+  --color-text-muted: #9aa3b5;
+  --color-danger: #ef4444;
 }

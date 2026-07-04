@@ -16,37 +16,89 @@
   a {
     @apply text-inherit no-underline;
   }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-primary) 45%, transparent);
+    color: #fff;
+  }
 }
 
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5
-      font-medium text-ink shadow-neon transition hover:bg-brand-glow focus:outline-none
+      font-medium text-white transition hover:bg-brand-glow focus:outline-none
       focus-visible:ring-2 focus-visible:ring-brand-accent;
+    box-shadow: 0 0 18px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  }
+
+  .btn-primary:hover {
+    box-shadow: 0 0 28px color-mix(in srgb, var(--color-primary) 55%, transparent);
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-lg border border-border
       bg-surface-2 px-5 py-2.5 font-medium text-ink transition hover:border-brand
-      hover:shadow-neon focus:outline-none focus-visible:ring-2 focus-visible:ring-brand;
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-brand;
+  }
+
+  .btn-secondary:hover {
+    box-shadow: 0 0 18px color-mix(in srgb, var(--color-primary) 30%, transparent);
   }
 
   .btn-accent {
     @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-5 py-2.5
-      font-medium text-bg shadow-neon-accent transition hover:brightness-110 focus:outline-none
-      focus-visible:ring-2 focus-visible:ring-brand-pink;
+      font-medium text-white transition hover:brightness-110 focus:outline-none
+      focus-visible:ring-2 focus-visible:ring-brand-accent;
+    box-shadow: 0 0 18px color-mix(in srgb, var(--color-accent) 35%, transparent);
   }
 
   .card-surface {
-    @apply rounded-xl border border-border bg-surface shadow-neon;
+    @apply rounded-xl border border-border bg-surface;
+    transition:
+      border-color 200ms ease,
+      box-shadow 200ms ease,
+      transform 200ms ease;
+  }
+
+  .card-surface:hover {
+    border-color: color-mix(in srgb, var(--color-primary) 45%, var(--color-border));
+    box-shadow:
+      0 0 0 1px color-mix(in srgb, var(--color-primary) 20%, transparent),
+      0 0 24px color-mix(in srgb, var(--color-primary) 18%, transparent);
   }
 
   .input-field {
     @apply w-full rounded-lg border border-border bg-surface-2 px-4 py-2.5 text-ink
       placeholder:text-ink-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .input-field:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 22%, transparent);
   }
 
   .section-title {
-    @apply font-display text-2xl font-semibold tracking-wide text-ink md:text-3xl;
+    @apply text-xl font-semibold tracking-wide text-ink md:text-2xl;
+  }
+
+  .price-text {
+    @apply font-semibold text-brand-accent;
+    text-shadow: 0 0 12px color-mix(in srgb, var(--color-accent) 45%, transparent);
+  }
+
+  .neon-text {
+    color: #fff;
+    text-shadow:
+      0 0 8px color-mix(in srgb, var(--color-primary) 55%, transparent),
+      0 0 22px color-mix(in srgb, var(--color-primary) 35%, transparent);
+  }
+
+  .neon-text-green {
+    color: var(--color-accent);
+    text-shadow:
+      0 0 8px color-mix(in srgb, var(--color-accent) 55%, transparent),
+      0 0 20px color-mix(in srgb, var(--color-accent) 35%, transparent);
   }
 }

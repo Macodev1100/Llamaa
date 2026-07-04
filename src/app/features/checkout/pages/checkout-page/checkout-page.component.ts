@@ -9,7 +9,6 @@ import { CartService } from '../../../../core/cart/cart.service';
 import { EmptyStateComponent } from '../../../../shared/components/empty-state/empty-state.component';
 import { CartSummaryComponent } from '../../components/cart-summary/cart-summary.component';
 import { PaymentFormComponent } from '../../components/payment-form/payment-form.component';
-import { ShippingFormComponent } from '../../components/shipping-form/shipping-form.component';
 
 @Component({
   selector: 'app-checkout-page',
@@ -18,14 +17,12 @@ import { ShippingFormComponent } from '../../components/shipping-form/shipping-f
     ReactiveFormsModule,
     EmptyStateComponent,
     CartSummaryComponent,
-    ShippingFormComponent,
     PaymentFormComponent,
   ],
   template: `
-    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <header class="mb-8">
-        <p class="mb-1 text-sm uppercase tracking-widest text-brand-accent">Checkout</p>
-        <h1 class="section-title">Finalizar compra</h1>
+    <section class="checkout">
+      <header class="checkout-head">
+        <h1>Checkout</h1>
       </header>
 
       @if (cart.count() === 0) {
@@ -37,25 +34,88 @@ import { ShippingFormComponent } from '../../components/shipping-form/shipping-f
           actionLink="/catalog"
         />
       } @else {
-        <form class="grid gap-8 lg:grid-cols-5" [formGroup]="form" (ngSubmit)="submit()">
-          <div class="flex flex-col gap-6 lg:col-span-3">
-            <app-shipping-form [form]="form" />
-            <app-payment-form [form]="form" />
-          </div>
+        <form class="checkout-grid" [formGroup]="form" (ngSubmit)="submit()">
+          <app-cart-summary />
 
-          <div class="flex flex-col gap-4 lg:col-span-2">
-            <app-cart-summary />
+          <div class="checkout-payment">
+            <app-payment-form [form]="form" />
+
             <button
               type="submit"
-              class="btn-accent w-full"
+              class="checkout-submit"
               [disabled]="form.invalid"
             >
-              Confirmar pedido
+              Realizar pedido
             </button>
+
+            <p class="checkout-secure">🔒 Pago 100% seguro</p>
           </div>
         </form>
       }
     </section>
+  `,
+  styles: `
+    .checkout {
+      padding: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .checkout {
+        padding: 1.25rem;
+      }
+    }
+
+    .checkout-head h1 {
+      margin: 0 0 1.25rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .checkout-grid {
+      display: grid;
+      gap: 1.25rem;
+    }
+
+    @media (min-width: 900px) {
+      .checkout-grid {
+        grid-template-columns: 1.1fr 0.9fr;
+        align-items: start;
+      }
+    }
+
+    .checkout-payment {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .checkout-submit {
+      width: 100%;
+      border: 0;
+      border-radius: 0.65rem;
+      background: var(--color-accent);
+      color: #04120a;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.9rem 1rem;
+      cursor: pointer;
+    }
+
+    .checkout-submit:disabled {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    .checkout-submit:hover:not(:disabled) {
+      filter: brightness(1.06);
+    }
+
+    .checkout-secure {
+      margin: 0;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+    }
   `,
 })
 export class CheckoutPageComponent {
@@ -64,12 +124,10 @@ export class CheckoutPageComponent {
   private readonly router = inject(Router);
 
   readonly form = this.fb.nonNullable.group({
-    fullName: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    address: ['', Validators.required],
-    city: ['', Validators.required],
-    zip: ['', Validators.required],
-    paymentMethod: this.fb.nonNullable.control<'card' | 'transfer'>('card', Validators.required),
+    paymentMethod: this.fb.nonNullable.control<'transfer' | 'yape' | 'cash'>(
+      'transfer',
+      Validators.required
+    ),
   });
 
   submit(): void {

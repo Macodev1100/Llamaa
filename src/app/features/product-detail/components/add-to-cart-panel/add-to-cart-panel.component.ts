@@ -1,40 +1,28 @@
 import { Component, Input, inject, signal } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { CartService } from '../../../../core/cart/cart.service';
 import { pulseClick } from '../../../../shared/animations/micro-interactions';
-import { QuantitySelectorComponent } from '../../../../shared/components/quantity-selector/quantity-selector.component';
 import { Product } from '../../../../shared/models/product.model';
 
 @Component({
   selector: 'app-add-to-cart-panel',
   standalone: true,
-  imports: [QuantitySelectorComponent, RouterLink],
   animations: [pulseClick],
   template: `
-    <div class="card-surface flex flex-col gap-4 p-5">
-      <p class="font-display text-sm uppercase tracking-wide text-ink-muted">
-        Añadir al carrito
-      </p>
-
-      <app-quantity-selector
-        [value]="quantity()"
-        [max]="product.stock"
-        (valueChange)="quantity.set($event)"
-      />
-
+    <div class="panel">
       <button
         type="button"
-        class="btn-primary w-full"
+        class="btn-cart"
         [@pulseClick]="addPulse()"
         (@pulseClick.done)="onPulseDone('add')"
         (click)="add()"
       >
-        Añadir {{ quantity() }} unidad(es)
+        🛒 Agregar al carrito
       </button>
 
       <button
         type="button"
-        class="btn-accent buy-now-btn w-full"
+        class="btn-buy"
         [@pulseClick]="buyPulse()"
         (@pulseClick.done)="onPulseDone('buy')"
         (click)="buyNow()"
@@ -42,26 +30,71 @@ import { Product } from '../../../../shared/models/product.model';
         Comprar ahora
       </button>
 
-      <a routerLink="/checkout" class="btn-secondary w-full text-center">
-        Ir al checkout
-      </a>
+      <button type="button" class="btn-fav" (click)="favorited.set(!favorited())">
+        {{ favorited() ? '♥' : '♡' }} Agregar a favoritos
+      </button>
 
       @if (added()) {
-        <p class="text-center text-sm text-brand-accent">✓ Añadido al carrito</p>
+        <p class="added">✓ Añadido al carrito</p>
       }
     </div>
   `,
   styles: `
-    .buy-now-btn {
-      transition:
-        box-shadow 200ms ease,
-        filter 200ms ease,
-        transform 200ms ease;
+    .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+      margin-top: 0.5rem;
     }
 
-    .buy-now-btn:hover {
+    .btn-cart,
+    .btn-buy,
+    .btn-fav {
+      width: 100%;
+      border-radius: 0.55rem;
+      padding: 0.85rem 1rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-cart {
+      border: 0;
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-cart:hover {
       filter: brightness(1.08);
-      box-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 45%, transparent);
+    }
+
+    .btn-buy {
+      border: 1px solid var(--color-border);
+      background: transparent;
+      color: #fff;
+    }
+
+    .btn-buy:hover {
+      border-color: var(--color-text-muted);
+    }
+
+    .btn-fav {
+      border: 0;
+      background: transparent;
+      color: var(--color-text-muted);
+      font-weight: 500;
+      padding: 0.35rem 0;
+    }
+
+    .btn-fav:hover {
+      color: var(--color-accent);
+    }
+
+    .added {
+      margin: 0;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--color-accent);
     }
   `,
 })
@@ -71,21 +104,21 @@ export class AddToCartPanelComponent {
   private readonly cart = inject(CartService);
   private readonly router = inject(Router);
 
-  readonly quantity = signal(1);
   readonly added = signal(false);
+  readonly favorited = signal(false);
   readonly addPulse = signal<'idle' | 'active'>('idle');
   readonly buyPulse = signal<'idle' | 'active'>('idle');
 
   add(): void {
     this.addPulse.set('active');
-    this.cart.add(this.product, this.quantity());
+    this.cart.add(this.product, 1);
     this.added.set(true);
     setTimeout(() => this.added.set(false), 2000);
   }
 
   buyNow(): void {
     this.buyPulse.set('active');
-    this.cart.add(this.product, this.quantity());
+    this.cart.add(this.product, 1);
     void this.router.navigate(['/checkout']);
   }
 

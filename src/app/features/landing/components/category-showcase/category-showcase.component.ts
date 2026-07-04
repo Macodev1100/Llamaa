@@ -1,45 +1,116 @@
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
 
-interface CategoryItem {
+interface BenefitItem {
+  icon: string;
   label: string;
-  slug: string;
-  emoji: string;
-  description: string;
+  tone: 'green' | 'purple';
 }
 
 @Component({
   selector: 'app-category-showcase',
   standalone: true,
-  imports: [RouterLink],
   template: `
-    <section class="border-y border-border bg-surface/50 py-16">
-      <div class="mx-auto max-w-7xl px-4 sm:px-6">
-        <h2 class="section-title mb-8 text-center">Explora por categoría</h2>
-        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          @for (category of categories; track category.slug) {
-            <a
-              [routerLink]="['/catalog']"
-              [queryParams]="{ category: category.slug }"
-              class="card-surface group p-6 transition hover:border-brand-accent hover:shadow-neon-accent"
-            >
-              <span class="mb-3 block text-3xl">{{ category.emoji }}</span>
-              <h3 class="font-display text-lg font-semibold group-hover:text-brand-glow">
-                {{ category.label }}
-              </h3>
-              <p class="mt-1 text-sm text-ink-muted">{{ category.description }}</p>
-            </a>
-          }
-        </div>
-      </div>
+    <section class="benefits">
+      @for (item of benefits; track item.label) {
+        <article class="benefit-card" [class.green]="item.tone === 'green'" [class.purple]="item.tone === 'purple'">
+          <span class="benefit-icon">{{ item.icon }}</span>
+          <p>{{ item.label }}</p>
+        </article>
+      }
     </section>
+  `,
+  styles: `
+    .benefits {
+      display: grid;
+      gap: 0.75rem;
+      padding: 1rem;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .benefits {
+        padding: 1rem 1.25rem;
+      }
+    }
+
+    @media (min-width: 900px) {
+      .benefits {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .benefit-card {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      border-radius: 0.85rem;
+      border: 1px solid var(--color-border);
+      background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+      backdrop-filter: blur(8px);
+      padding: 0.85rem 0.95rem;
+      transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+    }
+
+    .benefit-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .benefit-card.green:hover {
+      border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-border));
+      box-shadow: 0 0 22px color-mix(in srgb, var(--color-accent) 22%, transparent);
+    }
+
+    .benefit-card.purple:hover {
+      border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
+      box-shadow: 0 0 22px color-mix(in srgb, var(--color-primary) 22%, transparent);
+    }
+
+    .benefit-icon {
+      display: grid;
+      place-items: center;
+      width: 2.1rem;
+      height: 2.1rem;
+      border-radius: 0.55rem;
+      font-size: 1rem;
+      flex-shrink: 0;
+      transition: box-shadow 180ms ease;
+    }
+
+    .benefit-card.green .benefit-icon {
+      color: var(--color-accent);
+      background: color-mix(in srgb, var(--color-accent) 15%, transparent);
+    }
+
+    .benefit-card.purple .benefit-icon {
+      color: var(--color-primary-glow);
+      background: color-mix(in srgb, var(--color-primary) 18%, transparent);
+    }
+
+    .benefit-card.green:hover .benefit-icon {
+      box-shadow: 0 0 14px color-mix(in srgb, var(--color-accent) 45%, transparent);
+    }
+
+    .benefit-card.purple:hover .benefit-icon {
+      box-shadow: 0 0 14px color-mix(in srgb, var(--color-primary) 45%, transparent);
+    }
+
+    .benefit-card p {
+      margin: 0;
+      font-size: 0.82rem;
+      font-weight: 500;
+      line-height: 1.25;
+      color: var(--color-text);
+    }
   `,
 })
 export class CategoryShowcaseComponent {
-  readonly categories: CategoryItem[] = [
-    { label: 'GPUs', slug: 'gpus', emoji: '🖥️', description: 'Ray tracing y DLSS/FSR' },
-    { label: 'CPUs', slug: 'cpus', emoji: '⚡', description: 'Potencia multi-núcleo' },
-    { label: 'Periféricos', slug: 'peripherals', emoji: '⌨️', description: 'Teclados y ratones' },
-    { label: 'Monitores', slug: 'monitors', emoji: '📺', description: 'OLED y alta tasa' },
+  readonly benefits: BenefitItem[] = [
+    { icon: '🚚', label: 'Envíos a todo Cajamarca', tone: 'green' },
+    { icon: '🛡', label: 'Productos Garantizados', tone: 'purple' },
+    { icon: '🔒', label: 'Pagos 100% Seguros', tone: 'green' },
+    { icon: '🎧', label: 'Atención Personalizada', tone: 'purple' },
   ];
 }

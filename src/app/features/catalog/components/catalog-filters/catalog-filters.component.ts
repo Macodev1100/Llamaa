@@ -31,10 +31,9 @@ export type SortOption = 'name' | 'price-asc' | 'price-desc' | 'rating';
             (ngModelChange)="categoryChange.emit($event)"
           >
             <option value="all">Todas</option>
-            <option value="gpus">GPUs</option>
-            <option value="cpus">CPUs</option>
+            <option value="games">Juegos</option>
+            <option value="consoles">Consolas</option>
             <option value="peripherals">Periféricos</option>
-            <option value="monitors">Monitores</option>
             <option value="accessories">Accesorios</option>
           </select>
         </label>

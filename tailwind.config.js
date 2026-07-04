@@ -24,9 +24,9 @@ module.exports = {
         danger: 'var(--color-danger)',
       },
       boxShadow: {
-        neon: '0 0 20px color-mix(in srgb, var(--color-primary) 45%, transparent)',
-        'neon-accent': '0 0 20px color-mix(in srgb, var(--color-accent) 40%, transparent)',
-        'neon-pink': '0 0 20px color-mix(in srgb, var(--color-accent-2) 40%, transparent)',
+        neon: '0 0 20px color-mix(in srgb, var(--color-primary) 35%, transparent)',
+        'neon-accent': '0 0 20px color-mix(in srgb, var(--color-accent) 35%, transparent)',
+        'neon-pink': '0 0 20px color-mix(in srgb, var(--color-accent-2) 35%, transparent)',
       },
       fontFamily: {
         display: ['Orbitron', 'Segoe UI', 'sans-serif'],
@@ -34,7 +34,7 @@ module.exports = {
       },
       backgroundImage: {
         'hero-glow':
-          'radial-gradient(ellipse at top, color-mix(in srgb, var(--color-primary) 25%, transparent), transparent 60%)',
+          'radial-gradient(ellipse at top, color-mix(in srgb, var(--color-primary) 20%, transparent), transparent 60%)',
       },
     },
   },

@@ -8,7 +8,6 @@ import { AddToCartPanelComponent } from '../../components/add-to-cart-panel/add-
 import { ProductGalleryComponent } from '../../components/product-gallery/product-gallery.component';
 import { ProductInfoComponent } from '../../components/product-info/product-info.component';
 import { RelatedProductsComponent } from '../../components/related-products/related-products.component';
-import { SpecsTableComponent } from '../../components/specs-table/specs-table.component';
 
 @Component({
   selector: 'app-product-detail-page',
@@ -19,29 +18,28 @@ import { SpecsTableComponent } from '../../components/specs-table/specs-table.co
     ProductGalleryComponent,
     ProductInfoComponent,
     AddToCartPanelComponent,
-    SpecsTableComponent,
     RelatedProductsComponent,
   ],
   template: `
-    <section class="mx-auto max-w-7xl px-4 py-10 sm:px-6">
-      <a routerLink="/catalog" class="mb-6 inline-block text-sm text-brand-glow hover:underline">
-        ← Volver al catálogo
-      </a>
-
+    <section class="detail">
       @if (product(); as product) {
-        <div class="grid gap-8 lg:grid-cols-2">
+        <nav class="breadcrumbs" aria-label="Breadcrumb">
+          <a routerLink="/">Inicio</a>
+          <span>/</span>
+          <a routerLink="/catalog">Productos</a>
+          <span>/</span>
+          <span class="current">{{ product.name }}</span>
+        </nav>
+
+        <div class="detail-grid">
           <app-product-gallery [product]="product" />
-          <div class="flex flex-col gap-6">
+          <div class="detail-info">
             <app-product-info [product]="product" />
             <app-add-to-cart-panel [product]="product" />
           </div>
         </div>
 
-        <div class="mt-10 grid gap-8 lg:grid-cols-2">
-          <app-specs-table [product]="product" />
-        </div>
-
-        <div class="mt-14">
+        <div class="detail-related">
           <app-related-products [products]="related()" />
         </div>
       } @else {
@@ -53,6 +51,53 @@ import { SpecsTableComponent } from '../../components/specs-table/specs-table.co
         />
       }
     </section>
+  `,
+  styles: `
+    .detail {
+      padding: 1rem;
+    }
+
+    @media (min-width: 640px) {
+      .detail {
+        padding: 1.25rem;
+      }
+    }
+
+    .breadcrumbs {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 1.1rem;
+      font-size: 0.82rem;
+      color: var(--color-text-muted);
+    }
+
+    .breadcrumbs a:first-child {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    .breadcrumbs .current {
+      color: var(--color-text-muted);
+    }
+
+    .detail-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 900px) {
+      .detail-grid {
+        grid-template-columns: 1.05fr 1fr;
+        gap: 2rem;
+        align-items: start;
+      }
+    }
+
+    .detail-related {
+      margin-top: 2rem;
+    }
   `,
 })
 export class ProductDetailPageComponent {

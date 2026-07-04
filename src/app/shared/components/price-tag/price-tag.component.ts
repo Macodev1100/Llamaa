@@ -1,13 +1,13 @@
-import { CurrencyPipe } from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-price-tag',
   standalone: true,
-  imports: [CurrencyPipe],
+  imports: [DecimalPipe],
   template: `
-    <span class="font-display font-semibold text-brand-glow" [class]="sizeClass">
-      {{ price | currency: 'USD':'symbol':'1.2-2' }}
+    <span class="price-text" [class]="sizeClass">
+      S/ {{ price | number: '1.2-2' }}
     </span>
   `,
 })

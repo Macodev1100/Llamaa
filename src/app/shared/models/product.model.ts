@@ -5,21 +5,27 @@ export interface Product {
   price: number;
   category: ProductCategory;
   image: string;
+  images?: string[];
   tags: string[];
   stock: number;
   rating: number;
   /** true = producto seminuevo / refurbished */
   seminuevo?: boolean;
   featured?: boolean;
+  platform?: string;
+  genre?: string;
+  ageRating?: string;
   specs?: Record<string, string>;
 }
 
 export type ProductCategory =
+  | 'games'
+  | 'consoles'
+  | 'peripherals'
+  | 'accessories'
   | 'gpus'
   | 'cpus'
-  | 'peripherals'
-  | 'monitors'
-  | 'accessories';
+  | 'monitors';
 
 export interface CartItem {
   product: Product;
@@ -32,7 +38,7 @@ export interface CheckoutForm {
   address: string;
   city: string;
   zip: string;
-  paymentMethod: 'card' | 'transfer';
+  paymentMethod: 'transfer' | 'yape' | 'cash' | 'card';
 }
 
 export interface OrderSummary {
