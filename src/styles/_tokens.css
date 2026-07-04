@@ -1,0 +1,18 @@
+:root {
+  /* Superficies */
+  --color-bg: #0b0614;
+  --color-surface: #140a22;
+  --color-surface-2: #1e1033;
+  --color-border: #2d1b4e;
+
+  /* Marca / neón */
+  --color-primary: #a855f7;
+  --color-primary-glow: #c084fc;
+  --color-accent: #22d3ee;
+  --color-accent-2: #e879f9;
+
+  /* Texto */
+  --color-text: #f5f3ff;
+  --color-text-muted: #a78bfa;
+  --color-danger: #fb7185;
+}

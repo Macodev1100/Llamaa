@@ -1,0 +1,52 @@
+@import './styles/_tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    color-scheme: dark;
+  }
+
+  body {
+    @apply m-0 min-h-screen bg-bg font-sans text-ink antialiased;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand px-5 py-2.5
+      font-medium text-ink shadow-neon transition hover:bg-brand-glow focus:outline-none
+      focus-visible:ring-2 focus-visible:ring-brand-accent;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-border
+      bg-surface-2 px-5 py-2.5 font-medium text-ink transition hover:border-brand
+      hover:shadow-neon focus:outline-none focus-visible:ring-2 focus-visible:ring-brand;
+  }
+
+  .btn-accent {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-brand-accent px-5 py-2.5
+      font-medium text-bg shadow-neon-accent transition hover:brightness-110 focus:outline-none
+      focus-visible:ring-2 focus-visible:ring-brand-pink;
+  }
+
+  .card-surface {
+    @apply rounded-xl border border-border bg-surface shadow-neon;
+  }
+
+  .input-field {
+    @apply w-full rounded-lg border border-border bg-surface-2 px-4 py-2.5 text-ink
+      placeholder:text-ink-muted focus:border-brand focus:outline-none focus:ring-1 focus:ring-brand;
+  }
+
+  .section-title {
+    @apply font-display text-2xl font-semibold tracking-wide text-ink md:text-3xl;
+  }
+}
